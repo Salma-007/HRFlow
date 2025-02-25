@@ -4,6 +4,9 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\RolePermissionController;
 use App\Http\Middleware\CheckRole;
+use App\Http\Controllers\DepartmentController;
+
+Route::resource('departments', DepartmentController::class);
 
 Route::middleware([CheckRole::class.':admin'])->group(function () {
     Route::get('/admin/roles-permissions', [RolePermissionController::class, 'index'])->name('admin.roles_permissions.index');
