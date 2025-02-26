@@ -99,10 +99,6 @@
                 </li>
             @endforeach
         </ul>
-        <!-- Lien de pagination -->
-        <div class="mt-4">
-            {{ $permissions->links() }}
-        </div>
     </div>
 </div>
 @endsection

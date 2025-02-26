@@ -12,7 +12,7 @@ class RolePermissionController extends Controller
     public function index()
     {
         $roles = Role::paginate(3);  
-        $permissions = Permission::paginate(3);
+        $permissions = Permission::all();
         return view('admin.roles_permissions.index', compact('roles', 'permissions'));
     }
 
@@ -22,7 +22,6 @@ class RolePermissionController extends Controller
         $request->validate([
             'name' => 'required|unique:roles,name',
             'permissions' => 'array',
-            'permissions.*' => 'exists:permissions,id', // Vérifie que l'ID existe
         ]);
     
         $role = Role::create([
