@@ -7,6 +7,12 @@ use App\Http\Middleware\CheckRole;
 use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\PostController;
+use App\Http\Controllers\ContractController;
+use App\Http\Controllers\GradeController;
+
+Route::resource('grades', GradeController::class);
+
+Route::resource('contracts', ContractController::class);
 
 Route::resource('posts', PostController::class);
 

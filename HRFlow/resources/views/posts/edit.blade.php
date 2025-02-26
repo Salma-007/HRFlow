@@ -4,29 +4,30 @@
 <div class="container mx-auto p-6">
     <h1 class="text-3xl font-semibold text-gray-800 mb-6">Modifier le Post</h1>
     
-    <form action="{{ route('posts.update', $post->id) }}" method="POST" class="space-y-4">
-        @csrf
-        @method('PUT')
-        
-        <div>
-            <label for="name" class="block text-sm font-medium text-gray-700">Nom du Post</label>
-            <input type="text" name="name" id="name" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500" value="{{ $post->name }}" required>
-        </div>
+    <form action="{{ route('posts.update', $post->id) }}" method="POST">
+    @csrf
+    @method('PUT')
 
-        <div>
-            <label for="department_id" class="block text-sm font-medium text-gray-700">Département</label>
-            <select name="department_id" id="department_id" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500" required>
-                @foreach($departments as $department)
-                    <option value="{{ $department->id }}" {{ $department->id == $post->department_id ? 'selected' : '' }}>
-                        {{ $department->name }}
-                    </option>
-                @endforeach
-            </select>
-        </div>
+    <div class="mb-4">
+        <label for="name" class="block text-sm font-medium text-gray-700">Nom</label>
+        <input type="text" id="name" name="name" value="{{ old('name', $post->name) }}" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+    </div>
 
-        <button type="submit" class="w-full py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500">
-            Mettre à jour le Post
-        </button>
-    </form>
+    <div class="mb-4">
+        <label for="departments_id" class="block text-sm font-medium text-gray-700">Département</label>
+        <select id="departments_id" name="departments_id" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+            @foreach($departments as $department)
+                <option value="{{ $department->id }}" {{ $department->id == old('departments_id', $post->departments_id) ? 'selected' : '' }}>
+                    {{ $department->name }}
+                </option>
+            @endforeach
+        </select>
+    </div>
+
+    <div>
+        <button type="submit" class="px-6 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700">Mettre à jour</button>
+    </div>
+</form>
+
 </div>
 @endsection

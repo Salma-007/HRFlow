@@ -23,7 +23,7 @@ class PostController extends Controller
     {
         $request->validate([
             'name' => 'required|string|max:255',
-            'department_id' => 'required|exists:departments,id',
+            'departments_id' => 'required|exists:departments,id',
         ]);
 
         Post::create([
@@ -43,7 +43,7 @@ class PostController extends Controller
 
     public function edit(Post $post)
     {
-        $departments = Department::all(); // Récupère tous les départements
+        $departments = Department::all(); 
         return view('posts.edit', compact('post', 'departments'));
     }
 
@@ -51,16 +51,18 @@ class PostController extends Controller
     {
         $request->validate([
             'name' => 'required|string|max:255',
-            'department_id' => 'required|exists:departments,id',
+            'departments_id' => 'required|exists:departments,id',  // Utilisez 'departments_id' ici
         ]);
-
+    
+        // Mise à jour du post
         $post->update([
             'name' => $request->name,
-            'department_id' => $request->department_id,
+            'departments_id' => $request->departments_id,  // Utilisez 'departments_id' ici également
         ]);
-
+    
         return redirect()->route('posts.index')->with('success', 'Post updated successfully.');
     }
+    
 
     public function destroy(Post $post)
     {
