@@ -16,4 +16,9 @@ class Post extends Model
     {
         return $this->belongsTo(Department::class, 'departments_id');
     }
+
+    public function users()
+    {
+        return $this->hasMany(User::class);
+    }
 }

@@ -11,9 +11,9 @@ class Department extends Model
     
     protected $fillable = ['name', 'description'];
 
-    public function employees()
+    public function users()
     {
-        return $this->hasMany(Employee::class);
+        return $this->hasMany(User::class);
     }
 
     public function posts()

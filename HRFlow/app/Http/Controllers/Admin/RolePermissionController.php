@@ -11,7 +11,7 @@ class RolePermissionController extends Controller
 {
     public function index()
     {
-        $roles = Role::paginate(3);  
+        $roles = Role::paginate(4);  
         $permissions = Permission::all();
         return view('admin.roles_permissions.index', compact('roles', 'permissions'));
     }
