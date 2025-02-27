@@ -9,7 +9,12 @@ class Department extends Model
 {
     use HasFactory;
     
-    protected $fillable = ['name', 'description'];
+    protected $fillable = ['name', 'description', 'responsable_id'];
+
+    public function responsable()
+    {
+        return $this->belongsTo(User::class, 'responsable_id');
+    }
 
     public function users()
     {

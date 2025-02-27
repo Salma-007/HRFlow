@@ -18,6 +18,7 @@
                 <tr>
                     <th class="px-4 py-2 text-left">Nom</th>
                     <th class="px-4 py-2 text-left">Description</th>
+                    <th class="px-4 py-2 text-left">Responsable</th> <!-- Nouvelle colonne pour le responsable -->
                     <th class="px-4 py-2 text-left">Actions</th>
                 </tr>
             </thead>
@@ -26,6 +27,10 @@
                     <tr>
                         <td class="px-4 py-2">{{ $department->name }}</td>
                         <td class="px-4 py-2">{{ $department->description }}</td>
+                        <td class="px-4 py-2">
+                            <!-- Affichage du nom du responsable -->
+                            {{ $department->responsable ? $department->responsable->name : 'Aucun responsable' }}
+                        </td>
                         <td class="px-4 py-2">
                             <a href="{{ route('departments.edit', $department->id) }}" class="px-4 py-2 bg-yellow-600 text-white rounded-md hover:bg-yellow-700">Modifier</a>
                             <form action="{{ route('departments.destroy', $department->id) }}" method="POST" class="inline">

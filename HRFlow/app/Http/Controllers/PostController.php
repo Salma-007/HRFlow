@@ -23,7 +23,7 @@ class PostController extends Controller
     {
         $request->validate([
             'name' => 'required|string|max:255',
-            'departments_id' => 'required|exists:departments,id',
+            'department_id' => 'required|exists:departments,id',
         ]);
 
         Post::create([

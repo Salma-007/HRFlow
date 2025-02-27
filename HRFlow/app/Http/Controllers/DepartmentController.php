@@ -4,18 +4,21 @@ namespace App\Http\Controllers;
 
 use App\Models\Department;
 use Illuminate\Http\Request;
+use App\Models\User;
 
 class DepartmentController extends Controller
 {
     public function index()
     {
-        $departments = Department::paginate(8);
+        $departments = Department::with('responsable')->paginate(8);  
         return view('departments.index', compact('departments'));
     }
+    
 
     public function create()
     {
-        return view('departments.create');
+        $users = User::all();
+        return view('departments.create', compact('users'));
     }
 
     public function store(Request $request)
@@ -23,12 +26,18 @@ class DepartmentController extends Controller
         $request->validate([
             'name' => 'required|string|max:255',
             'description' => 'nullable|string',
+            'responsable_id' => 'nullable|exists:users,id',  
         ]);
-
-        Department::create($request->all());
-
+    
+        Department::create([
+            'name' => $request->name,
+            'description' => $request->description,
+            'responsable_id' => $request->responsable_id, 
+        ]);
+    
         return redirect()->route('departments.index')->with('success', 'Département créé avec succès');
     }
+    
 
     public function show($id)
     {
@@ -39,21 +48,29 @@ class DepartmentController extends Controller
     public function edit($id)
     {
         $department = Department::findOrFail($id);
-        return view('departments.edit', compact('department'));
+        $users = User::all();  
+        return view('departments.edit', compact('department', 'users'));  
     }
+    
 
     public function update(Request $request, $id)
     {
         $request->validate([
             'name' => 'required|string|max:255',
             'description' => 'nullable|string',
+            'responsable_id' => 'nullable|exists:users,id',  
         ]);
-
+    
         $department = Department::findOrFail($id);
-        $department->update($request->all());
-
+        $department->update([
+            'name' => $request->name,
+            'description' => $request->description,
+            'responsable_id' => $request->responsable_id,  
+        ]);
+    
         return redirect()->route('departments.index')->with('success', 'Département mis à jour avec succès');
     }
+    
 
     public function destroy($id)
     {

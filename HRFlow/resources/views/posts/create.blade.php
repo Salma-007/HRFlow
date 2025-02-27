@@ -3,7 +3,15 @@
 @section('content')
 <div class="container mx-auto p-6">
     <h1 class="text-3xl font-semibold text-gray-800 mb-6">Créer un Post</h1>
-    
+    @if ($errors->any())
+        <div class="alert alert-danger">
+            <ul>
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+        @endif
     <form action="{{ route('posts.store') }}" method="POST" class="space-y-4">
         @csrf
         

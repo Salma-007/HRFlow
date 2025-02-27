@@ -17,6 +17,16 @@
             <textarea name="description" id="description" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md"></textarea>
         </div>
 
+        <div class="mb-4">
+            <label for="responsable_id" class="block text-sm font-medium text-gray-600">Responsable</label>
+            <select name="responsable_id" id="responsable_id" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md">
+                <option value="">Sélectionner un responsable</option>
+                @foreach($users as $user)
+                    <option value="{{ $user->id }}">{{ $user->name }}</option>
+                @endforeach
+            </select>
+        </div>
+
         <button type="submit" class="px-6 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700">Créer</button>
     </form>
 </div>
