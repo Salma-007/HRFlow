@@ -16,6 +16,7 @@
                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Email</th>
                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Rôle</th>
                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Détails</th> <!-- Nouvelle colonne -->
                 </tr>
             </thead>
             <tbody class="divide-y divide-gray-200">
@@ -37,6 +38,9 @@
                                 @method('DELETE')
                                 <button type="submit" class="text-red-600 hover:text-red-900">Supprimer</button>
                             </form>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                            <a href="{{ route('users.show', $user->id) }}" class="text-blue-600 hover:text-blue-900">Voir Détails</a> <!-- Nouveau bouton pour les détails -->
                         </td>
                     </tr>
                 @endforeach

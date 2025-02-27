@@ -10,6 +10,9 @@ use App\Http\Controllers\PostController;
 use App\Http\Controllers\ContractController;
 use App\Http\Controllers\GradeController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\DocumentController;
+
+Route::resource('documents', DocumentController::class);
 
 Route::get('/get-posts/{departmentId}', [UserController::class, 'getPostsByDepartment']);
 

@@ -12,7 +12,7 @@
                 @endforeach
             </ul>
         </div>
-    @endif
+        @endif
 
     <form action="{{ route('users.store') }}" method="POST">
         @csrf

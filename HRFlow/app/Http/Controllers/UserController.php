@@ -72,6 +72,12 @@ class UserController extends Controller
         $posts = Post::where('departments_id', $departmentId)->get();
         return response()->json($posts);
     }
+
+    public function show($id)
+    {
+        $user = User::with(['role', 'grade', 'contract', 'department', 'post'])->findOrFail($id);
+        return view('users.show', compact('user'));
+    }
     
 
     public function edit(User $user)
