@@ -17,6 +17,7 @@
                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Rôle</th>
                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Détails</th> <!-- Nouvelle colonne -->
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">carriere</th>
                 </tr>
             </thead>
             <tbody class="divide-y divide-gray-200">
@@ -41,6 +42,9 @@
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
                             <a href="{{ route('users.show', $user->id) }}" class="text-blue-600 hover:text-blue-900">Voir Détails</a> <!-- Nouveau bouton pour les détails -->
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                            <a href="{{ route('users.carrieres', $user->id) }}" class="text-blue-600 hover:text-blue-900">career</a> <!-- Nouveau bouton pour les détails -->
                         </td>
                     </tr>
                 @endforeach

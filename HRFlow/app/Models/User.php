@@ -71,6 +71,11 @@ class User extends Authenticatable
         return $this->hasMany(Department::class, 'responsable_id');
     }
 
+    public function formations()
+    {
+        return $this->belongsToMany(Formation::class, 'user_formation');
+    }
+
     /**
      * The attributes that should be hidden for serialization.
      *

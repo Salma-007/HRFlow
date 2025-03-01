@@ -11,6 +11,21 @@ use App\Http\Controllers\ContractController;
 use App\Http\Controllers\GradeController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\DocumentController;
+use App\Http\Controllers\FormationController;
+use App\Http\Controllers\CarriereController;
+
+Route::get('/carrieres', [CarriereController::class, 'index'])->name('carrieres.index');
+Route::get('/carrieres/create', [CarriereController::class, 'create'])->name('carrieres.create');
+Route::post('/carrieres', [CarriereController::class, 'store'])->name('carrieres.store');
+Route::get('/carrieres/{carriere}', [CarriereController::class, 'show'])->name('carrieres.show');
+
+Route::get('/users/{user}/carrieres', [CarriereController::class, 'userCarrieres'])->name('users.carrieres');
+
+Route::get('/posts-by-department/{departmentId}', [CarriereController::class, 'getPostsByDepartment'])->name('posts.by.department');
+
+Route::get('formations/{formation}/users', [FormationController::class, 'showUsers'])->name('formations.users');
+
+Route::resource('formations', FormationController::class);
 
 Route::resource('documents', DocumentController::class);
 
