@@ -32,47 +32,40 @@
         </div>
     </div>
 
-    <!-- Historique des carrières -->
+    <!-- Historique des carrières sous forme de barre de progression horizontale -->
     <div class="bg-white rounded-lg shadow-md p-6">
         <h2 class="text-xl font-semibold mb-4">Historique des évolutions</h2>
         
         @if($carrieres->count() > 0)
-            <div class="overflow-x-auto">
-                <table class="min-w-full table-auto">
-                    <thead>
-                        <tr class="bg-gray-50">
-                            <th class="px-4 py-2 text-left">Période</th>
-                            <th class="px-4 py-2 text-left">Grade</th>
-                            <th class="px-4 py-2 text-left">Poste</th>
-                            <th class="px-4 py-2 text-left">Contrat</th>
-                            <th class="px-4 py-2 text-left">Formation</th>
-                            <th class="px-4 py-2 text-left">Détails</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach($carrieres as $carriere)
-                            <tr class="border-t hover:bg-gray-50">
-                                <td class="px-4 py-3">
-                                    <div class="font-medium">{{ $carriere->date_debut->format('d/m/Y') }}</div>
-                                    <div class="text-sm text-gray-600">
-                                        @if($carriere->date_fin)
-                                            au {{ $carriere->date_fin->format('d/m/Y') }}
-                                        @else
-                                            <span class="text-green-600">En cours</span>
-                                        @endif
-                                    </div>
-                                </td>
-                                <td class="px-4 py-3">{{ $carriere->grade->name ?? 'N/A' }}</td>
-                                <td class="px-4 py-3">{{ $carriere->post->name ?? 'N/A' }}</td>
-                                <td class="px-4 py-3">{{ $carriere->contract->name ?? 'N/A' }}</td>
-                                <td class="px-4 py-3">{{ $carriere->formation->name ?? 'Aucune' }}</td>
-                                <td class="px-4 py-3">
-                                    <a href="{{ route('carrieres.show', $carriere->id) }}" class="text-blue-600 hover:underline">Voir</a>
-                                </td>
-                            </tr>
-                        @endforeach
-                    </tbody>
-                </table>
+            <div class="relative">
+                <!-- Ligne de progression horizontale -->
+                <div class="absolute left-4 right-4 top-4 h-1 bg-gray-300"></div>
+
+                <!-- Points et détails -->
+                <div class="flex justify-between">
+                    @foreach($carrieres as $carriere)
+                        <div class="relative flex flex-col items-center">
+                            <!-- Point cliquable -->
+                            <a href="{{ route('carrieres.show', $carriere->id) }}" class="block w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center text-white hover:bg-blue-700 transition duration-300">
+                                <span class="text-sm">{{ $loop->iteration }}</span>
+                            </a>
+
+                            <!-- Détails de la carrière -->
+                            <div class="mt-2 text-center">
+                                <p class="text-sm font-medium">{{ $carriere->post->name ?? 'N/A' }}</p>
+                                <p class="text-xs text-gray-600">{{ $carriere->grade->name ?? 'N/A' }}</p>
+                                <p class="text-xs text-gray-500">
+                                    {{ $carriere->date_debut->format('d/m/Y') }}
+                                    @if($carriere->date_fin)
+                                        - {{ $carriere->date_fin->format('d/m/Y') }}
+                                    @else
+                                        <span class="text-green-600"> (En cours)</span>
+                                    @endif
+                                </p>
+                            </div>
+                        </div>
+                    @endforeach
+                </div>
             </div>
         @else
             <p class="text-gray-500 italic">Aucun historique de carrière disponible.</p>

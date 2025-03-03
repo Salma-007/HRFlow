@@ -99,22 +99,18 @@
         const departmentSelect = document.getElementById('department_id');
         const postSelect = document.getElementById('post_id');
         
-        // Fonction pour mettre à jour les postes en fonction du département
         function updatePosts() {
             const departmentId = departmentSelect.value;
             
             if (departmentId) {
-                // Désactiver le select des postes pendant le chargement
                 postSelect.disabled = true;
                 
-                // Faire une requête AJAX pour obtenir les postes
                 fetch(`/posts-by-department/${departmentId}`)
                     .then(response => response.json())
                     .then(data => {
-                        // Vider le select des postes
+
                         postSelect.innerHTML = '<option value="">Sélectionner un poste</option>';
-                        
-                        // Ajouter les nouveaux postes
+
                         data.forEach(post => {
                             const option = document.createElement('option');
                             option.value = post.id;
@@ -122,7 +118,6 @@
                             postSelect.appendChild(option);
                         });
                         
-                        // Réactiver le select des postes
                         postSelect.disabled = false;
                     })
                     .catch(error => {
@@ -130,15 +125,12 @@
                         postSelect.disabled = false;
                     });
             } else {
-                // Si aucun département n'est sélectionné, vider le select des postes
                 postSelect.innerHTML = '<option value="">Sélectionner un poste</option>';
             }
         }
         
-        // Écouter les changements sur le select des départements
         departmentSelect.addEventListener('change', updatePosts);
         
-        // Charger les postes initiaux si un département est déjà sélectionné
         if (departmentSelect.value) {
             updatePosts();
         }
