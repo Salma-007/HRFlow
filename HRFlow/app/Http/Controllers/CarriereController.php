@@ -23,7 +23,6 @@ class CarriereController extends Controller
     {
         $user_id = $request->user_id; 
         $user = User::findOrFail($user_id);
-        
         $grades = Grade::all();
         $formations = Formation::all();
         $contracts = Contract::all();
@@ -41,7 +40,7 @@ class CarriereController extends Controller
             'formation_id' => 'nullable|exists:formations,id',
             'contract_id' => 'required|exists:contracts,id',
             'department_id' => 'required|exists:departments,id',
-            'post_id' => 'required|exists:posts,id',
+            'post_id' => 'nullable|exists:posts,id',
             'date_debut' => 'required|date',
             'date_fin' => 'nullable|date|after_or_equal:date_debut',
             'commentaire' => 'nullable|string',
@@ -85,7 +84,7 @@ class CarriereController extends Controller
         $user = User::findOrFail($userId);
         $carrieres = Carriere::with(['grade', 'formation', 'contract', 'post'])
             ->where('user_id', $userId)
-            ->orderBy('date_debut', 'desc')
+            ->orderBy('date_debut')
             ->get();
             
         return view('carrieres.user_carrieres', compact('user', 'carrieres'));

@@ -17,8 +17,8 @@ use App\Http\Controllers\DashboardController;
 
 
 Route::get('/carrieres', [CarriereController::class, 'index'])->name('carrieres.index');
-Route::get('/carrieres/create', [CarriereController::class, 'create'])->name('carrieres.create');
-Route::post('/carrieres', [CarriereController::class, 'store'])->name('carrieres.store');
+Route::get('/carrieres/create', [CarriereController::class, 'create'])->name('carrieres.create')->middleware('role:admin');
+Route::post('/carrieres', [CarriereController::class, 'store'])->name('carrieres.store')->middleware('role:admin');
 Route::get('/carrieres/{carriere}', [CarriereController::class, 'show'])->name('carrieres.show');
 
 Route::get('/users/{user}/carrieres', [CarriereController::class, 'userCarrieres'])->name('users.carrieres');
@@ -47,10 +47,10 @@ Route::resource('departments', DepartmentController::class);
 
 // Route::middleware([CheckRole::class.':admin'])->group(function () {
     Route::get('/admin/roles-permissions', [RolePermissionController::class, 'index'])->name('admin.roles_permissions.index')->middleware('role:admin');
-    Route::post('/admin/roles', [RolePermissionController::class, 'storeRole'])->name('admin.roles.store');
-    Route::post('/admin/permissions', [RolePermissionController::class, 'storePermission'])->name('admin.permissions.store');
-    Route::delete('admin/roles/{id}', [RolePermissionController::class, 'destroyRole'])->name('admin.roles.destroy');
-    Route::delete('admin/permissions/{id}', [RolePermissionController::class, 'destroyPermission'])->name('admin.permissions.destroy');
+    Route::post('/admin/roles', [RolePermissionController::class, 'storeRole'])->name('admin.roles.store')->middleware('role:admin');
+    Route::post('/admin/permissions', [RolePermissionController::class, 'storePermission'])->name('admin.permissions.store')->middleware('role:admin');
+    Route::delete('admin/roles/{id}', [RolePermissionController::class, 'destroyRole'])->name('admin.roles.destroy')->middleware('role:admin');
+    Route::delete('admin/permissions/{id}', [RolePermissionController::class, 'destroyPermission'])->name('admin.permissions.destroy')->middleware('role:admin');
 // });
 
 Route::get('/', function () {

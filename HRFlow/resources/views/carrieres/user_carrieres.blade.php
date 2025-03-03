@@ -6,7 +6,9 @@
 
     <div class="flex justify-between mb-6">
         <a href="{{ route('users.show', $user->id) }}" class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700">Retour au profil</a>
+        @can('suivi carriere')
         <a href="{{ route('carrieres.create', ['user_id' => $user->id]) }}" class="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700">Ajouter une nouvelle carrière</a>
+        @endcan
     </div>
 
     <!-- Carrière actuelle -->

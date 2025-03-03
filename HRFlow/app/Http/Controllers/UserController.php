@@ -5,8 +5,11 @@ use Spatie\Permission\Traits\HasRoles;
 use App\Models\User;
 use App\Models\Grade;
 use App\Models\Contract;
+use App\Models\Carriere;
 use App\Models\Department;
 use App\Models\Post;
+use App\Mail\MyTestMail;
+use Illuminate\Support\Facades\Mail;
 use Spatie\Permission\Models\Role;
 use Illuminate\Http\Request;
 
@@ -15,7 +18,7 @@ class UserController extends Controller
     use HasRoles;
     public function index()
     {
-        $users = User::with(['grade', 'contract', 'department', 'post', 'role'])->get();
+        $users = User::with(['grade', 'contract', 'department', 'post', 'role'])->paginate(9);
         return view('users.index', compact('users'));
     }
 
@@ -39,7 +42,7 @@ class UserController extends Controller
             'salary' => 'nullable|numeric',
             'birthdate' => 'nullable|date|before:today', 
             'address' => 'nullable|string',
-            'hire_date' => 'nullable|date|before_or_equal:today', 
+            'hire_date' => 'nullable|date|after_or_equal:today', 
             'phone' => 'nullable|string',
             'status' => 'nullable|in:active,inactive',
         ]);
@@ -63,6 +66,19 @@ class UserController extends Controller
         
         $role = Role::findById($request->role_id);
         $user->assignRole($role);
+
+        Carriere::create([
+            'user_id' => $user->id,  
+            'grade_id' => $request->grade_id, 
+            'formation_id' => null, 
+            'contract_id' => $request->contract_id, 
+            'post_id' => $request->post_id,  
+            'date_debut' => now(),  
+            'date_fin' => null,  
+            'commentaire' => 'Carrière initiale',  
+        ]);
+
+        Mail::to($user->email)->send(new MyTestMail($user->name, $request->password));
         
         return redirect()->route('users.index')->with('success', 'User created successfully.');
     }
@@ -97,9 +113,9 @@ class UserController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email,' . $user->id,
             'salary' => 'nullable|numeric',
-            'birthdate' => 'nullable|date',
+            'birthdate' => 'nullable|date|before:today', 
             'address' => 'nullable|string',
-            'hire_date' => 'nullable|date',
+            'hire_date' => 'nullable|date|after_or_equal:today', 
             'phone' => 'nullable|string',
             'status' => 'nullable|in:active,inactive',
         ]);
