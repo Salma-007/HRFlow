@@ -76,7 +76,7 @@ class CarriereController extends Controller
             'post_id' => $request->post_id,
         ]);
 
-        return redirect()->route('users.show', $request->user_id)
+        return redirect()->route('users.carrieres', $request->user_id)
             ->with('success', 'Carrière ajoutée avec succès.');
     }
 

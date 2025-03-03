@@ -13,6 +13,8 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\DocumentController;
 use App\Http\Controllers\FormationController;
 use App\Http\Controllers\CarriereController;
+use App\Http\Controllers\DashboardController;
+
 
 Route::get('/carrieres', [CarriereController::class, 'index'])->name('carrieres.index');
 Route::get('/carrieres/create', [CarriereController::class, 'create'])->name('carrieres.create');
@@ -55,9 +57,10 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+// Route::get('/dashboard', function () {
+//     return view('dashboard');
+// })->middleware(['auth', 'verified'])->name('dashboard');
+Route::get('/dashboard', [DashboardController::class, 'dashboard'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

@@ -5,7 +5,7 @@
     <h1 class="text-3xl font-semibold text-gray-800 mb-6">Créer un Utilisateur</h1>
 
         @if ($errors->any())
-        <div class="alert alert-danger">
+        <div class="alert alert-danger text-red-500">
             <ul>
                 @foreach ($errors->all() as $error)
                     <li>{{ $error }}</li>

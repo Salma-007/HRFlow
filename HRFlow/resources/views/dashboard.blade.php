@@ -1,17 +1,58 @@
-<x-app-layout>
-    <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-            {{ __('Dashboard') }}
-        </h2>
-    </x-slot>
+@extends('layouts.app')
 
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="p-6 text-gray-900 dark:text-gray-100">
-                    {{ __("You're logged in!") }}
+@section('content')
+<div class="py-12">
+    <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+        <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
+            <div class="p-6 text-gray-900 dark:text-gray-100">
+                <h2 class="text-3xl font-bold">{{ __("Welcome to your dashboard!") }}</h2>
+                <p class="text-lg mt-2 text-gray-600 dark:text-gray-400">{{ __("Here are some important statistics.") }}</p>
+            </div>
+
+            <!-- Statistiques -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 p-6">
+                <!-- Carte HR -->
+                <div class="bg-blue-500 text-white p-6 rounded-lg shadow-lg transition-transform transform hover:scale-105 duration-300 ease-in-out">
+                    <div class="flex items-center justify-between">
+                        <div class="text-3xl font-semibold">{{ $totalHR }}</div>
+                        <div class="text-4xl">
+                            <i class="fas fa-users-cog"></i> 
+                        </div>
+                    </div>
+                    <h3 class="text-xl mt-4 font-semibold">Total HR</h3>
+                </div>
+
+                <div class="bg-green-500 text-white p-6 rounded-lg shadow-lg transition-transform transform hover:scale-105 duration-300 ease-in-out">
+                    <div class="flex items-center justify-between">
+                        <div class="text-3xl font-semibold">{{ $totalEmployees }}</div>
+                        <div class="text-4xl">
+                            <i class="fas fa-users"></i> 
+                        </div>
+                    </div>
+                    <h3 class="text-xl mt-4 font-semibold">Total Employees</h3>
+                </div>
+
+                <div class="bg-yellow-500 text-white p-6 rounded-lg shadow-lg transition-transform transform hover:scale-105 duration-300 ease-in-out">
+                    <div class="flex items-center justify-between">
+                        <div class="text-3xl font-semibold">{{ $totalManagers }}</div>
+                        <div class="text-4xl">
+                            <i class="fas fa-briefcase"></i> 
+                        </div>
+                    </div>
+                    <h3 class="text-xl mt-4 font-semibold">Total Managers</h3>
+                </div>
+
+                <div class="bg-red-500 text-white p-6 rounded-lg shadow-lg transition-transform transform hover:scale-105 duration-300 ease-in-out">
+                    <div class="flex items-center justify-between">
+                        <div class="text-3xl font-semibold">{{ $totalFormations }}</div>
+                        <div class="text-4xl">
+                            <i class="fas fa-chalkboard-teacher"></i> 
+                        </div>
+                    </div>
+                    <h3 class="text-xl mt-4 font-semibold">Total Formations</h3>
                 </div>
             </div>
         </div>
     </div>
-</x-app-layout>
+</div>
+@endsection

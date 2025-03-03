@@ -37,9 +37,9 @@ class UserController extends Controller
             'email' => 'required|email|unique:users,email',
             'password' => 'required|string|min:8',
             'salary' => 'nullable|numeric',
-            'birthdate' => 'nullable|date',
+            'birthdate' => 'nullable|date|before:today', 
             'address' => 'nullable|string',
-            'hire_date' => 'nullable|date',
+            'hire_date' => 'nullable|date|before_or_equal:today', 
             'phone' => 'nullable|string',
             'status' => 'nullable|in:active,inactive',
         ]);
