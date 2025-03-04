@@ -26,6 +26,7 @@
                     <x-nav-link :href="route('users.index')" :active="request()->routeIs('users.index')">
                         {{ __('Users') }}
                     </x-nav-link>
+                    @can('manage roles')
                     <x-nav-link :href="route('posts.index')" :active="request()->routeIs('posts.index')">
                         {{ __('Posts') }}
                     </x-nav-link>
@@ -37,6 +38,13 @@
                     </x-nav-link>
                     <x-nav-link :href="route('contracts.index')" :active="request()->routeIs('contracts.index')">
                         {{ __('Contracts') }}
+                    </x-nav-link>
+                    <x-nav-link :href="route('conges.index')" :active="request()->routeIs('conges.index')">
+                        {{ __('Congés') }}
+                    </x-nav-link>
+                    @endcan
+                    <x-nav-link :href="route('conges.mesconges')" :active="request()->routeIs('conges.mesconges')">
+                        {{ __('Mes Congés') }}
                     </x-nav-link>
                 </div>
             </div>

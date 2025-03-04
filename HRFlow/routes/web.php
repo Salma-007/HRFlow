@@ -14,7 +14,14 @@ use App\Http\Controllers\DocumentController;
 use App\Http\Controllers\FormationController;
 use App\Http\Controllers\CarriereController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\CongeController;
 
+Route::get('/conges', [CongeController::class, 'index'])->name('conges.index');
+Route::middleware('auth')->group(function () {
+    Route::get('/conges/create', [CongeController::class, 'create'])->name('conges.create');
+    Route::post('/conges', [CongeController::class, 'store'])->name('conges.store');
+    Route::get('/mesconges', [CongeController::class, 'myconges'])->name('conges.mesconges');
+});
 
 Route::get('/carrieres', [CarriereController::class, 'index'])->name('carrieres.index');
 Route::get('/carrieres/create', [CarriereController::class, 'create'])->name('carrieres.create')->middleware('role:admin');

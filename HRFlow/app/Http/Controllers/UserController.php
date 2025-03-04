@@ -42,7 +42,7 @@ class UserController extends Controller
             'salary' => 'nullable|numeric',
             'birthdate' => 'nullable|date|before:today', 
             'address' => 'nullable|string',
-            'hire_date' => 'nullable|date|after_or_equal:today', 
+            'hire_date' => 'nullable|date', 
             'phone' => 'nullable|string',
             'status' => 'nullable|in:active,inactive',
         ]);
@@ -115,7 +115,7 @@ class UserController extends Controller
             'salary' => 'nullable|numeric',
             'birthdate' => 'nullable|date|before:today', 
             'address' => 'nullable|string',
-            'hire_date' => 'nullable|date|after_or_equal:today', 
+            'hire_date' => 'nullable|date', 
             'phone' => 'nullable|string',
             'status' => 'nullable|in:active,inactive',
         ]);
@@ -146,5 +146,21 @@ class UserController extends Controller
     {
         $user->delete();
         return redirect()->route('users.index')->with('success', 'User deleted successfully.');
+    }
+
+    public function calculateLeaveDays(User $user)
+    {
+        $hireDate = Carbon::parse($user->hire_date);
+        $currentDate = Carbon::now();
+        
+        $yearsWorked = $hireDate->diffInYears($currentDate);
+        $monthsWorked = $hireDate->diffInMonths($currentDate);
+
+        if ($yearsWorked < 1) {
+            $leaveDays = 1.5 * $monthsWorked;
+        } else {
+            $leaveDays = 18 + (0.5 * $yearsWorked);
+        }
+        return $leaveDays;
     }
 }
