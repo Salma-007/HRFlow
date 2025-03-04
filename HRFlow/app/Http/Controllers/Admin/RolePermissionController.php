@@ -50,6 +50,36 @@ class RolePermissionController extends Controller
         return redirect()->route('admin.roles_permissions.index')->with('success', 'La permission a été créée avec succès.');
     }
 
+    public function editRole($id)
+    {
+        $role = Role::findOrFail($id);
+        $permissions = Permission::all();
+        $rolePermissions = $role->permissions->pluck('id')->toArray(); 
+
+        return view('admin.roles_permissions.edit', compact('role', 'permissions', 'rolePermissions'));
+    }
+
+    public function updateRole(Request $request, $id)
+    {
+        $request->validate([
+            'name' => 'required|unique:roles,name,' . $id,
+            'permissions' => 'array',
+        ]);
+
+        $role = Role::findOrFail($id);
+        $role->name = $request->name;
+        $role->save();
+
+        if ($request->has('permissions')) {
+            $permissions = Permission::find($request->permissions); 
+            $role->syncPermissions($permissions); 
+        } else {
+            $role->syncPermissions([]); 
+        }
+
+        return redirect()->route('admin.roles_permissions.index')->with('success', 'Rôle mis à jour avec succès.');
+    }
+
     // Méthode pour supprimer un rôle
     public function destroyRole($id)
     {

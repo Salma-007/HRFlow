@@ -16,6 +16,11 @@ use App\Http\Controllers\CarriereController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\CongeController;
 
+
+Route::get('admin/roles/{role}/edit', [RolePermissionController::class, 'editRole'])->name('admin.roles.edit');
+
+Route::put('admin/roles/{role}', [RolePermissionController::class, 'updateRole'])->name('admin.roles.update');
+
 Route::get('/conges', [CongeController::class, 'index'])->name('conges.index');
 Route::middleware('auth')->group(function () {
     Route::get('/conges/create', [CongeController::class, 'create'])->name('conges.create');

@@ -64,6 +64,11 @@
             @foreach($roles as $role)
                 <li class="px-4 py-2 bg-gray-50 text-gray-800 rounded-lg shadow-sm hover:bg-gray-100 flex justify-between items-center">
                     {{ $role->name }}
+                    <div class="flex">
+                    <!-- Bouton de modification -->
+                    <a href="{{ route('admin.roles.edit', $role->id) }}" class="px-4 py-2 bg-yellow-600 text-white rounded-md hover:bg-yellow-700 mr-2">
+                        Modifier
+                    </a>
                     <form action="{{ route('admin.roles.destroy', $role->id) }}" method="POST" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer ce rôle ?')">
                         @csrf
                         @method('DELETE')
@@ -71,6 +76,7 @@
                             Supprimer
                         </button>
                     </form>
+                    </div>
                 </li>
             @endforeach
         </ul>
