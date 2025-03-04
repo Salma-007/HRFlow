@@ -15,8 +15,9 @@ use App\Http\Controllers\FormationController;
 use App\Http\Controllers\CarriereController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\CongeController;
+use App\Http\Controllers\HierarchyController;
 
-
+Route::get('/hierarchy', [HierarchyController::class, 'index'])->name('hierarchy.index');
 
 Route::get('carrieres/{carriere}/edit', [CarriereController::class, 'edit'])->name('carrieres.edit');
 

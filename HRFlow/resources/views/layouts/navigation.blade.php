@@ -42,7 +42,7 @@
                     @endcan
                     @can('voir mes conges')
                     <x-nav-link :href="route('conges.index')" :active="request()->routeIs('conges.index')">
-                        {{ __('manage conges') }}
+                        {{ __('Congés') }}
                     </x-nav-link>
                     @endcan
                     @can('voir mes conges')

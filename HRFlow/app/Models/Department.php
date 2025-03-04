@@ -15,7 +15,10 @@ class Department extends Model
     {
         return $this->belongsTo(User::class, 'responsable_id');
     }
-
+    public function employees()
+    {
+        return $this->hasMany(User::class, 'department_id');
+    }
     public function users()
     {
         return $this->hasMany(User::class);
