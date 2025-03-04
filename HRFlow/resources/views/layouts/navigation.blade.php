@@ -39,13 +39,17 @@
                     <x-nav-link :href="route('contracts.index')" :active="request()->routeIs('contracts.index')">
                         {{ __('Contracts') }}
                     </x-nav-link>
+                    @endcan
+                    @can('voir mes conges')
                     <x-nav-link :href="route('conges.index')" :active="request()->routeIs('conges.index')">
-                        {{ __('Congés') }}
+                        {{ __('manage conges') }}
                     </x-nav-link>
                     @endcan
+                    @can('voir mes conges')
                     <x-nav-link :href="route('conges.mesconges')" :active="request()->routeIs('conges.mesconges')">
                         {{ __('Mes Congés') }}
                     </x-nav-link>
+                    @endcan
                 </div>
             </div>
 

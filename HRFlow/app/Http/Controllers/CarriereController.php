@@ -101,4 +101,53 @@ class CarriereController extends Controller
         $posts = Post::where('department_id', $departmentId)->get();
         return response()->json($posts);
     }
+
+    public function edit(Carriere $carriere)
+    {
+        $grades = Grade::all();
+        $formations = Formation::all();
+        $contracts = Contract::all();
+        $departments = Department::all();
+        $posts = Post::all();
+
+        return view('carrieres.edit', compact('carriere', 'grades', 'formations', 'contracts', 'departments', 'posts'));
+    }
+
+    public function update(Request $request, Carriere $carriere)
+    {
+        $request->validate([
+            'grade_id' => 'required|exists:grades,id',
+            'formation_id' => 'nullable|exists:formations,id',
+            'contract_id' => 'required|exists:contracts,id',
+            'department_id' => 'required|exists:departments,id',
+            'post_id' => 'nullable|exists:posts,id',
+            'date_debut' => 'required|date',
+            'date_fin' => 'nullable|date|after_or_equal:date_debut',
+            'commentaire' => 'nullable|string',
+        ]);
+
+        $carriere->update([
+            'grade_id' => $request->grade_id,
+            'formation_id' => $request->formation_id,
+            'contract_id' => $request->contract_id,
+            'department_id' => $request->department_id,
+            'post_id' => $request->post_id,
+            'date_debut' => $request->date_debut,
+            'date_fin' => $request->date_fin,
+            'commentaire' => $request->commentaire,
+        ]);
+
+        $user = $carriere->user;
+        $user->update([
+            'grade_id' => $request->grade_id,
+            'contract_id' => $request->contract_id,
+            'department_id' => $request->department_id,
+            'post_id' => $request->post_id,
+        ]);
+
+        return redirect()->route('users.carrieres', $carriere->user_id)
+            ->with('success', 'Carrière mise à jour avec succès.');
+    }
+
+
 }

@@ -4,7 +4,7 @@
 <div class="py-12">
     <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
         <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
-        @can('manage permissions')
+        @can('voir statistics')
             <div class="p-6 text-gray-900 dark:text-gray-100">
                 <h2 class="text-3xl font-bold">{{ __("Welcome to your dashboard!") }}</h2>
                 <p class="text-lg mt-2 text-gray-600 dark:text-gray-400">{{ __("Here are some important statistics.") }}</p>
@@ -13,7 +13,7 @@
             <!-- Statistiques -->
             <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 p-6">
                 <!-- Carte HR -->
-                @can('manage permissions')
+                @can('voir statistics')
                 <div class="bg-blue-500 text-white p-6 rounded-lg shadow-lg transition-transform transform hover:scale-105 duration-300 ease-in-out">
                     <div class="flex items-center justify-between">
                         <div class="text-3xl font-semibold">{{ $totalHR }}</div>
@@ -54,6 +54,7 @@
                     <h3 class="text-xl mt-4 font-semibold">Total Formations</h3>
                 </div>
                 @endcan
+                @can('voir mes conges')
                 <!-- Carte Congés -->
                 <div class="bg-indigo-500 text-white p-6 rounded-lg shadow-lg transition-transform transform hover:scale-105 duration-300 ease-in-out">
                     <div class="flex items-center justify-between">
@@ -64,6 +65,7 @@
                 </div>
                     <h3 class="text-xl mt-4 font-semibold">Jours de Congé Restants</h3>
                 </div>
+                @endcan
             </div>
         </div>
     </div>

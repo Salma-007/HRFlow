@@ -7,6 +7,10 @@
     <div class="flex mb-6">
         <a href="{{ route('users.carrieres', $carriere->user_id) }}" class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700">Retour à l'historique</a>
     </div>
+    <div class="flex justify-between mt-6">
+    <a href="{{ route('carrieres.edit', $carriere->id) }}" class="px-4 py-2 bg-yellow-500 text-white rounded-md hover:bg-yellow-600">Modifier cette carrière</a>
+    </div>
+
 
     <div class="bg-white rounded-lg shadow-md p-6">
         <div class="mb-6">

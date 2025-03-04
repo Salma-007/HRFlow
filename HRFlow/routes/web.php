@@ -17,6 +17,11 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\CongeController;
 
 
+
+Route::get('carrieres/{carriere}/edit', [CarriereController::class, 'edit'])->name('carrieres.edit');
+
+Route::put('carrieres/{carriere}', [CarriereController::class, 'update'])->name('carrieres.update');
+
 Route::get('admin/roles/{role}/edit', [RolePermissionController::class, 'editRole'])->name('admin.roles.edit');
 
 Route::put('admin/roles/{role}', [RolePermissionController::class, 'updateRole'])->name('admin.roles.update');
