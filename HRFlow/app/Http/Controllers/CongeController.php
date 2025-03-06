@@ -15,8 +15,10 @@ class CongeController extends Controller
         $conges = Conge::whereHas('user', function ($query) {
             $query->where('department_id', Auth::user()->department_id);
         })->paginate(9);
+
+        $allconges = Conge::paginate(9);
     
-        return view('conges.index', compact('conges'));
+        return view('conges.index', compact('conges','allconges'));
     }
     public function myconges()
     {

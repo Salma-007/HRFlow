@@ -40,8 +40,8 @@ Route::post('/conge/reject/{id}', [CongeController::class, 'rejectConge'])->name
 
 
 Route::get('/carrieres', [CarriereController::class, 'index'])->name('carrieres.index');
-Route::get('/carrieres/create', [CarriereController::class, 'create'])->name('carrieres.create')->middleware('role:admin');
-Route::post('/carrieres', [CarriereController::class, 'store'])->name('carrieres.store')->middleware('role:admin');
+Route::get('/carrieres/create', [CarriereController::class, 'create'])->name('carrieres.create')->middleware('can:suivi carriere');
+Route::post('/carrieres', [CarriereController::class, 'store'])->name('carrieres.store')->middleware('can:suivi carriere');
 Route::get('/carrieres/{carriere}', [CarriereController::class, 'show'])->name('carrieres.show');
 
 Route::get('/users/{user}/carrieres', [CarriereController::class, 'userCarrieres'])->name('users.carrieres');
