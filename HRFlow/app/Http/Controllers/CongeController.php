@@ -32,6 +32,7 @@ class CongeController extends Controller
         $request->validate([
             'date_debut' => 'required|date|after_or_equal:' . Carbon::now()->addWeek()->toDateString(),  
             'date_fin' => 'required|date|after_or_equal:date_debut', 
+            'type_conge' => 'required|in:annuel,maternite,parental,maladie',
         ]);
 
         $date_debut = Carbon::parse($request->date_debut);
@@ -40,21 +41,22 @@ class CongeController extends Controller
 
         $user = Auth::user();
         $solde_conge = $user->solde_conges;
-
+    
         if ($duree_conge > $solde_conge) {
             return back()->withErrors(['date_fin' => 'La durée du congé dépasse le solde disponible de congé.'])->withInput();
         }
-
+ 
         Conge::create([
             'user_id' => Auth::id(),
             'date_debut' => $request->date_debut,
             'date_fin' => $request->date_fin,
+            'type_conge' => $request->type_conge, 
             'status' => 'pending',
         ]);
-    
+        
         $user->solde_conges -= $duree_conge;
         $user->save();
-    
+
         return redirect()->route('conges.mesconges')->with('success', 'Demande de congé soumise avec succès.');
     }
     

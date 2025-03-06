@@ -17,6 +17,9 @@ return new class extends Migration
             $table->date('date_debut');
             $table->date('date_fin');
             $table->enum('status', ['pending', 'refused','accepted'])->default('pending');
+            $table->boolean('manager_approval')->nullable()->default(null);
+            $table->boolean('rh_approval')->nullable()->default(null);
+            $table->enum('type_conge', ['annuel', 'maternite', 'parental', 'maladie'])->default('annuel');
             $table->timestamps();
         });
     }

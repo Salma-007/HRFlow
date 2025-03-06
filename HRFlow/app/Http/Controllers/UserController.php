@@ -12,6 +12,7 @@ use App\Mail\MyTestMail;
 use Illuminate\Support\Facades\Mail;
 use Spatie\Permission\Models\Role;
 use Illuminate\Http\Request;
+use Carbon\Carbon;
 
 class UserController extends Controller
 {
@@ -40,13 +41,13 @@ class UserController extends Controller
             'email' => 'required|email|unique:users,email',
             'password' => 'required|string|min:8',
             'salary' => 'nullable|numeric',
-            'birthdate' => 'nullable|date|before:today', 
+            'birthdate' => 'nullable|date|before:today',
             'address' => 'nullable|string',
-            'hire_date' => 'nullable|date', 
+            'hire_date' => 'nullable|date',
             'phone' => 'nullable|string',
             'status' => 'nullable|in:active,inactive',
         ]);
-
+    
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
@@ -62,8 +63,9 @@ class UserController extends Controller
             'hire_date' => $request->hire_date,
             'phone' => $request->phone,
             'status' => $request->status,
+            'solde_conge' => $this->calculateLeaveDays($request->hire_date) 
         ]);
-        
+    
         $role = Role::findById($request->role_id);
         $user->assignRole($role);
 
@@ -73,13 +75,13 @@ class UserController extends Controller
             'formation_id' => null, 
             'contract_id' => $request->contract_id, 
             'post_id' => $request->post_id,  
-            'date_debut' => now(),  
+            'date_debut' => $request->hire_date,  
             'date_fin' => null,  
             'commentaire' => 'Carrière initiale',  
         ]);
 
         Mail::to($user->email)->send(new MyTestMail($user->name, $request->password));
-        
+    
         return redirect()->route('users.index')->with('success', 'User created successfully.');
     }
 
@@ -113,13 +115,13 @@ class UserController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email,' . $user->id,
             'salary' => 'nullable|numeric',
-            'birthdate' => 'nullable|date|before:today', 
+            'birthdate' => 'nullable|date|before:today',
             'address' => 'nullable|string',
-            'hire_date' => 'nullable|date', 
+            'hire_date' => 'nullable|date',
             'phone' => 'nullable|string',
             'status' => 'nullable|in:active,inactive',
         ]);
-
+    
         $user->update([
             'name' => $request->name,
             'email' => $request->email,
@@ -134,13 +136,12 @@ class UserController extends Controller
             'hire_date' => $request->hire_date,
             'phone' => $request->phone,
             'status' => $request->status,
+            'solde_conge' => $this->calculateLeaveDays($request->hire_date) 
         ]);
-
-        $role = Role::findById($request->role_id);
-        $user->assignRole($role);
-
+    
         return redirect()->route('users.index')->with('success', 'User updated successfully.');
     }
+    
 
     public function destroy(User $user)
     {
@@ -148,19 +149,24 @@ class UserController extends Controller
         return redirect()->route('users.index')->with('success', 'User deleted successfully.');
     }
 
-    public function calculateLeaveDays(User $user)
+
+
+    public function calculateLeaveDays($hireDate)
     {
-        $hireDate = Carbon::parse($user->hire_date);
+        if (!$hireDate) return 0; 
+
+        $hireDate = Carbon::parse($hireDate);
         $currentDate = Carbon::now();
-        
+
         $yearsWorked = $hireDate->diffInYears($currentDate);
         $monthsWorked = $hireDate->diffInMonths($currentDate);
 
         if ($yearsWorked < 1) {
-            $leaveDays = 1.5 * $monthsWorked;
+            return 1.5 * floor($monthsWorked);
         } else {
-            $leaveDays = 18 + (0.5 * $yearsWorked);
+            return 18 + (0.5 * $yearsWorked);
         }
-        return $leaveDays;
+        
     }
+
 }

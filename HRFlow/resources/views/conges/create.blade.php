@@ -35,6 +35,21 @@
             @enderror
         </div>
 
+        <!-- Type de congé -->
+        <div>
+            <label for="type_conge" class="block text-sm font-medium text-gray-700">Type de congé</label>
+            <select id="type_conge" name="type_conge" required
+                class="mt-2 block w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500 shadow-sm">
+                <option value="annuel" {{ old('type_conge') == 'annuel' ? 'selected' : '' }}>Congé Annuel</option>
+                <option value="maternite" {{ old('type_conge') == 'maternite' ? 'selected' : '' }}>Congé Maternité</option>
+                <option value="parental" {{ old('type_conge') == 'parental' ? 'selected' : '' }}>Congé Parental</option>
+                <option value="maladie" {{ old('type_conge') == 'maladie' ? 'selected' : '' }}>Congé Maladie</option>
+            </select>
+            @error('type_conge')
+                <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+            @enderror
+        </div>
+
         <!-- Bouton de soumission -->
         <div class="flex justify-center mt-6">
             <button type="submit" 

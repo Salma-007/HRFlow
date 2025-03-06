@@ -34,6 +34,7 @@ class User extends Authenticatable
         'hire_date',
         'phone',
         'status',
+        'solde_conge',
     ];
 
     // Relation avec Grade
