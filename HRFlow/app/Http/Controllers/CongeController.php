@@ -100,11 +100,11 @@ class CongeController extends Controller
             return back()->withErrors('Vous ne pouvez pas refuser la demande de congé de cet employé car il appartient à un autre département.');
         }
 
-        if (Auth::user()->role === 'manager') {
+        if (Auth::user()->role_id === 1) {
             $conge->manager_approval = false;
         }
 
-        if (Auth::user()->role === 'RH') {
+        if (Auth::user()->role_id === 2) {
             $conge->rh_approval = false; 
         }
 
