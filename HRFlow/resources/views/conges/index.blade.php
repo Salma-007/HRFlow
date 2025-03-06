@@ -35,19 +35,22 @@
                         @if($conge->status == 'pending')
                         <td class="py-3 px-6 text-left flex space-x-2">
                             <!-- Formulaire pour accepter -->
-                            <form action="" method="POST" class="inline-block">
+                            @can('aprove manager')
+                            <form action="{{ route('conge.approve.manager', $conge->id) }}" method="POST">
                                 @csrf
-                                @method('PUT')
-                                <button type="submit" class="px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition duration-300"
-                                        name="status" value="accepted">Accepter</button>
+                                <button type="submit" class="px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition duration-300">accept Manager</button>
                             </form>
-
-                            <!-- Formulaire pour refuser -->
-                            <form action="" method="POST" class="inline-block">
+                            @endcan
+                            @can('approve rh')
+                            <form action="{{ route('conge.approve.rh', $conge->id) }}" method="POST">
                                 @csrf
-                                @method('PUT')
-                                <button type="submit" class="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition duration-300"
-                                        name="status" value="refused">Refuser</button>
+                                <button type="submit" class="px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition duration-300">accept RH</button>
+                            </form>
+                            @endcan
+                            <!-- Formulaire pour refuser -->
+                            <form action="{{ route('conge.reject', $conge->id) }}" method="POST">
+                                @csrf
+                                <button type="submit" class="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition duration-300">Refuser</button>
                             </form>
                         </td>
                         @endif

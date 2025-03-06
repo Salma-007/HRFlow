@@ -12,10 +12,12 @@ class CongeController extends Controller
 {
     public function index()
     {
-        $conges = Conge::paginate(9); 
-        return view('conges.index', compact('conges')); 
+        $conges = Conge::whereHas('user', function ($query) {
+            $query->where('department_id', Auth::user()->department_id);
+        })->paginate(9);
+    
+        return view('conges.index', compact('conges'));
     }
-
     public function myconges()
     {
         $conges = Conge::where('user_id', Auth::id())->get();
@@ -40,7 +42,9 @@ class CongeController extends Controller
         $duree_conge = $date_debut->diffInDays($date_fin) + 1; 
 
         $user = Auth::user();
-        $solde_conge = $user->solde_conges;
+        $solde_conge = $user->solde_conge;
+
+        // dd($duree_conge, $solde_conge);
     
         if ($duree_conge > $solde_conge) {
             return back()->withErrors(['date_fin' => 'La durée du congé dépasse le solde disponible de congé.'])->withInput();
@@ -54,10 +58,75 @@ class CongeController extends Controller
             'status' => 'pending',
         ]);
         
-        $user->solde_conges -= $duree_conge;
-        $user->save();
+        // $user->solde_conge -= $duree_conge;
+        // $user->save();
 
         return redirect()->route('conges.mesconges')->with('success', 'Demande de congé soumise avec succès.');
+    }
+    
+    public function approveByManager($id)
+    {
+        $conge = Conge::findOrFail($id);
+        if (Auth::user()->departement_id != $conge->user->departement_id) {
+            return back()->withErrors('Vous ne pouvez pas approuver la demande de congé de cet employé car il appartient à un autre département.');
+        }
+
+        $conge->manager_approval = true;
+        $this->updateStatus($conge);
+
+        $conge->save();
+        return back()->with('success', 'Demande approuvée par le manager.');
+    }
+
+    public function approveByRh($id)
+    {
+        $conge = Conge::findOrFail($id);
+        if (Auth::user()->departement_id != $conge->user->departement_id) {
+            return back()->withErrors('Vous ne pouvez pas approuver la demande de congé de cet employé car il appartient à un autre département.');
+        }
+
+        $conge->rh_approval = true;
+        $this->updateStatus($conge);
+
+        $conge->save();
+        return back()->with('success', 'Demande approuvée par les RH.');
+    }
+
+    public function rejectConge($id)
+    {
+        $conge = Conge::findOrFail($id);
+
+        if (Auth::user()->departement_id != $conge->user->departement_id) {
+            return back()->withErrors('Vous ne pouvez pas refuser la demande de congé de cet employé car il appartient à un autre département.');
+        }
+
+        if (Auth::user()->role === 'manager') {
+            $conge->manager_approval = false;
+        }
+
+        if (Auth::user()->role === 'RH') {
+            $conge->rh_approval = false; 
+        }
+
+        $this->updateStatus($conge);
+    
+        $conge->save();
+    
+        return back()->with('error', 'Demande de congé refusée.');
+    }
+    
+
+    private function updateStatus($conge)
+    {
+        if ($conge->manager_approval === true && $conge->rh_approval === true) {
+            $conge->status = 'accepted';
+        } 
+        elseif ($conge->manager_approval === false || $conge->rh_approval === false) {
+            $conge->status = 'refused';
+        } 
+        else {
+            $conge->status = 'pending';
+        }
     }
     
 }

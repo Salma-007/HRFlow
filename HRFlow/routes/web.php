@@ -34,6 +34,11 @@ Route::middleware('auth')->group(function () {
     Route::get('/mesconges', [CongeController::class, 'myconges'])->name('conges.mesconges');
 });
 
+Route::post('/conge/approve/manager/{id}', [CongeController::class, 'approveByManager'])->name('conge.approve.manager');
+Route::post('/conge/approve/rh/{id}', [CongeController::class, 'approveByRh'])->name('conge.approve.rh');
+Route::post('/conge/reject/{id}', [CongeController::class, 'rejectConge'])->name('conge.reject');
+
+
 Route::get('/carrieres', [CarriereController::class, 'index'])->name('carrieres.index');
 Route::get('/carrieres/create', [CarriereController::class, 'create'])->name('carrieres.create')->middleware('role:admin');
 Route::post('/carrieres', [CarriereController::class, 'store'])->name('carrieres.store')->middleware('role:admin');

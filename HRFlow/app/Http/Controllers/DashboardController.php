@@ -19,8 +19,9 @@ class DashboardController extends Controller
         
         $user = auth()->user();
         $leaveDays = $this->calculateLeaveDays($user);
+        $solde = $user->solde_conge;
 
-        return view('dashboard', compact('totalHR', 'totalEmployees', 'totalManagers', 'totalFormations', 'leaveDays'));
+        return view('dashboard', compact('totalHR', 'totalEmployees', 'totalManagers', 'totalFormations', 'leaveDays','solde'));
     }
 
     public function calculateLeaveDays(User $user)

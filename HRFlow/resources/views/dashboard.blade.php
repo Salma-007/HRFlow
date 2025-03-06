@@ -58,7 +58,7 @@
                 <!-- Carte Congés -->
                 <div class="bg-indigo-500 text-white p-6 rounded-lg shadow-lg transition-transform transform hover:scale-105 duration-300 ease-in-out">
                     <div class="flex items-center justify-between">
-                        <div class="text-3xl font-semibold">{{ number_format($leaveDays, 1) }}</div>
+                        <div class="text-3xl font-semibold">{{ $solde }}</div>
                         <div class="text-4xl">
                             <i class="fas fa-calendar-day"></i>
                         </div>
