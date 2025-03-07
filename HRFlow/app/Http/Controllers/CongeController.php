@@ -72,14 +72,18 @@ class CongeController extends Controller
         if (Auth::user()->departement_id != $conge->user->departement_id) {
             return back()->withErrors('Vous ne pouvez pas approuver la demande de congé de cet employé car il appartient à un autre département.');
         }
-
+    
         $conge->manager_approval = true;
         $this->updateStatus($conge);
-
+    
+        if ($conge->manager_approval && $conge->rh_approval) {
+            $this->updateLeaveBalance($conge);
+        }
+    
         $conge->save();
         return back()->with('success', 'Demande approuvée par le manager.');
     }
-
+    
     public function approveByRh($id)
     {
         $conge = Conge::findOrFail($id);
@@ -90,9 +94,25 @@ class CongeController extends Controller
         $conge->rh_approval = true;
         $this->updateStatus($conge);
 
+        if ($conge->manager_approval && $conge->rh_approval) {
+            $this->updateLeaveBalance($conge);
+        }
+    
         $conge->save();
         return back()->with('success', 'Demande approuvée par les RH.');
     }
+    
+    private function updateLeaveBalance($conge)
+    {
+        $date_debut = Carbon::parse($conge->date_debut);
+        $date_fin = Carbon::parse($conge->date_fin);
+        $duree_conge = $date_debut->diffInWeekdays($date_fin);
+    
+        $user = $conge->user;
+        $user->solde_conge -= $duree_conge;
+        $user->save();
+    }
+    
 
     public function rejectConge($id)
     {
@@ -120,7 +140,7 @@ class CongeController extends Controller
 
     private function updateStatus($conge)
     {
-        if ($conge->manager_approval === true && $conge->rh_approval === true) {
+        if ($conge->manager_approval === 1 && $conge->rh_approval === 1) {
             $conge->status = 'accepted';
         } 
         elseif ($conge->manager_approval === false || $conge->rh_approval === false) {

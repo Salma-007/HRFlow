@@ -14,6 +14,9 @@ class Conge extends Model
         'date_debut',
         'date_fin',
         'status',
+        'manager_approval',
+        'rh_approval',
+        'type_conge',
     ];
 
     public function user()

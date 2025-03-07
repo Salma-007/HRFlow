@@ -50,40 +50,35 @@ Route::get('/posts-by-department/{departmentId}', [CarriereController::class, 'g
 
 Route::get('formations/{formation}/users', [FormationController::class, 'showUsers'])->name('formations.users');
 
-Route::resource('formations', FormationController::class);
+Route::resource('formations', FormationController::class)->middleware(['auth', 'verified']);
 
-Route::resource('documents', DocumentController::class);
+Route::resource('documents', DocumentController::class)->middleware(['auth', 'verified']);
 
 Route::get('/get-posts/{departmentId}', [UserController::class, 'getPostsByDepartment']);
 
-Route::resource('users', UserController::class);
+Route::resource('users', UserController::class)->middleware(['auth', 'verified']);
 
-Route::resource('grades', GradeController::class);
+Route::resource('grades', GradeController::class)->middleware(['auth', 'verified']);
 
-Route::resource('contracts', ContractController::class);
+Route::resource('contracts', ContractController::class)->middleware(['auth', 'verified']);
 
-Route::resource('posts', PostController::class);
+Route::resource('posts', PostController::class)->middleware(['auth', 'verified']);
 
-Route::resource('employees', EmployeeController::class);
+Route::resource('employees', EmployeeController::class)->middleware(['auth', 'verified']);
 
-Route::resource('departments', DepartmentController::class);
+Route::resource('departments', DepartmentController::class)->middleware(['auth', 'verified']);
 
-// Route::middleware([CheckRole::class.':admin'])->group(function () {
-    Route::get('/admin/roles-permissions', [RolePermissionController::class, 'index'])->name('admin.roles_permissions.index')->middleware('role:admin');
-    Route::post('/admin/roles', [RolePermissionController::class, 'storeRole'])->name('admin.roles.store')->middleware('role:admin');
-    Route::post('/admin/permissions', [RolePermissionController::class, 'storePermission'])->name('admin.permissions.store')->middleware('role:admin');
-    Route::delete('admin/roles/{id}', [RolePermissionController::class, 'destroyRole'])->name('admin.roles.destroy')->middleware('role:admin');
-    Route::delete('admin/permissions/{id}', [RolePermissionController::class, 'destroyPermission'])->name('admin.permissions.destroy')->middleware('role:admin');
-// });
+Route::get('/admin/roles-permissions', [RolePermissionController::class, 'index'])->name('admin.roles_permissions.index')->middleware('role:admin');
+Route::post('/admin/roles', [RolePermissionController::class, 'storeRole'])->name('admin.roles.store')->middleware('role:admin');
+Route::post('/admin/permissions', [RolePermissionController::class, 'storePermission'])->name('admin.permissions.store')->middleware('role:admin');
+Route::delete('admin/roles/{id}', [RolePermissionController::class, 'destroyRole'])->name('admin.roles.destroy')->middleware('role:admin');
+Route::delete('admin/permissions/{id}', [RolePermissionController::class, 'destroyPermission'])->name('admin.permissions.destroy')->middleware('role:admin');
 
 Route::get('/', function () {
     return view('welcome');
 });
 
-// Route::get('/dashboard', function () {
-//     return view('dashboard');
-// })->middleware(['auth', 'verified'])->name('dashboard');
-Route::get('/dashboard', [DashboardController::class, 'dashboard'])->name('dashboard');
+Route::get('/dashboard', [DashboardController::class, 'dashboard'])->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

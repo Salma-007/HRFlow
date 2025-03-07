@@ -40,6 +40,9 @@
                         {{ __('Contracts') }}
                     </x-nav-link>
                     @endcan
+                    <x-nav-link :href="route('hierarchy.index')" :active="request()->routeIs('hierarchy.index')">
+                        {{ __('Hierarchie') }}
+                    </x-nav-link>
                     @can('manage conges')
                     <x-nav-link :href="route('conges.index')" :active="request()->routeIs('conges.index')">
                         {{ __('Congés') }}
