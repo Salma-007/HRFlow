@@ -63,7 +63,8 @@ class UserController extends Controller
             'hire_date' => $request->hire_date,
             'phone' => $request->phone,
             'status' => $request->status,
-            'solde_conge' => $this->calculateLeaveDays($request->hire_date) 
+            'solde_conge' => $this->calculateLeaveDays($request->hire_date),
+            'solde_recup' => 0
         ]);
     
         $role = Role::findById($request->role_id);

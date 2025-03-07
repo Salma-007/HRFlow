@@ -18,8 +18,11 @@
                     @can('manage users')
                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
                     @endcan
-                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Détails</th> <!-- Nouvelle colonne -->
-                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">carriere</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Détails</th> 
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Carrière</th>
+                    @can('manage recoveries')
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Jours de récupération</th> 
+                    @endcan
                 </tr>
             </thead>
             <tbody class="divide-y divide-gray-200">
@@ -45,11 +48,16 @@
                         </td>
                         @endcan
                         <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                            <a href="{{ route('users.show', $user->id) }}" class="text-blue-600 hover:text-blue-900">Voir Détails</a> <!-- Nouveau bouton pour les détails -->
+                            <a href="{{ route('users.show', $user->id) }}" class="text-blue-600 hover:text-blue-900">Voir Détails</a> 
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                            <a href="{{ route('users.carrieres', $user->id) }}" class="text-blue-600 hover:text-blue-900">career</a> <!-- Nouveau bouton pour les détails -->
+                            <a href="{{ route('users.carrieres', $user->id) }}" class="text-blue-600 hover:text-blue-900">Carrière</a> 
                         </td>
+                        @can('manage recoveries')
+                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                            <button class="px-4 py-2 bg-green-600 text-white rounded-md" onclick="openRecoveryModal({{ $user->id }})">Ajouter Jours</button> 
+                        </td>
+                        @endcan
                     </tr>
                 @endforeach
             </tbody>
@@ -59,4 +67,37 @@
         {{ $users->links() }}
     </div>
 </div>
+
+<!-- Modal pour ajouter les jours de récupération -->
+<div id="recoveryModal" class="fixed inset-0 bg-gray-500 bg-opacity-75 z-50 hidden">
+    <div class="flex justify-center items-center h-full">
+        <div class="bg-white p-8 rounded-lg shadow-xl w-96">
+            <h2 class="text-xl font-semibold mb-4">Ajouter Jours de Récupération</h2>
+            <form id="recoveryForm" method="POST" action="{{ route('users.updateRecovery') }}">
+                @csrf
+                <input type="hidden" id="user_id" name="user_id" value="">
+                <div class="mb-4">
+                    <label for="recovery_days" class="block text-gray-700">Nombre de jours de récupération</label>
+                    <input type="number" id="recovery_days" name="recovery_days" class="w-full px-4 py-2 border border-gray-300 rounded-md" min="1" required>
+                </div>
+                <div class="flex justify-end">
+                    <button type="button" onclick="closeRecoveryModal()" class="px-4 py-2 bg-gray-300 text-gray-700 rounded-md mr-2">Annuler</button>
+                    <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded-md">Ajouter</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    function openRecoveryModal(userId) {
+        document.getElementById('user_id').value = userId;
+        document.getElementById('recoveryModal').classList.remove('hidden');
+    }
+
+    function closeRecoveryModal() {
+        document.getElementById('recoveryModal').classList.add('hidden');
+    }
+</script>
+
 @endsection

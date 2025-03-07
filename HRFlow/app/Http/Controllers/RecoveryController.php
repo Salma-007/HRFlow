@@ -6,6 +6,7 @@ use App\Models\Recovery;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Models\User;
 
 class RecoveryController extends Controller
 {
@@ -57,7 +58,11 @@ class RecoveryController extends Controller
         $duree_recup = $date_debut->diffInDays($date_fin) + 1; 
 
         $user = $recovery->user;
-        $user->solde_recup += $duree_recup;
+        if ($user->solde_recup < $duree_recup) {
+            return back()->withErrors('L\'utilisateur n\'a pas suffisamment de jours de récupération.');
+        }
+
+        $user->solde_recup -= $duree_recup;
         $user->save();
 
         $recovery->rh_approval = true;
@@ -81,5 +86,20 @@ class RecoveryController extends Controller
         $recovery->save();
 
         return back()->with('error', 'Demande de récupération refusée par les RH.');
+    }
+
+    public function updateRecovery(Request $request)
+    {
+        $request->validate([
+            'user_id' => 'required|exists:users,id',
+            'recovery_days' => 'required|integer|min:1',
+        ]);
+
+        $user = User::findOrFail($request->user_id);
+
+        $user->solde_recup = $request->recovery_days;
+        $user->save();
+
+        return redirect()->route('users.index')->with('success', 'Jours de récupération mis à jour avec succès.');
     }
 }

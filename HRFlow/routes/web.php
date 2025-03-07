@@ -19,6 +19,7 @@ use App\Http\Controllers\HierarchyController;
 use App\Http\Controllers\RecoveryController;
 
 Route::middleware(['auth'])->group(function () {
+    Route::post('/users/update-recovery', [RecoveryController::class, 'updateRecovery'])->middleware('can:manage recoveries')->name('users.updateRecovery');
     Route::get('/recoveries', [RecoveryController::class, 'index'])->middleware('can:manage recoveries')->name('recoveries.index');  
     Route::get('/my-recoveries', [RecoveryController::class, 'myRecoveries'])->middleware('can:voir my recoveries')->name('recoveries.myRecoveries'); 
     Route::get('/recoveries/create', [RecoveryController::class, 'create'])->middleware('can:voir my recoveries')->name('recoveries.create'); 
