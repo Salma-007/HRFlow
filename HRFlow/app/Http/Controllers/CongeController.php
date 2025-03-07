@@ -73,7 +73,7 @@ class CongeController extends Controller
             return back()->withErrors('Vous ne pouvez pas approuver la demande de congé de cet employé car il appartient à un autre département.');
         }
     
-        $conge->manager_approval = true;
+        $conge->manager_approval = 1;
         $this->updateStatus($conge);
     
         if ($conge->manager_approval && $conge->rh_approval) {
@@ -91,7 +91,7 @@ class CongeController extends Controller
             return back()->withErrors('Vous ne pouvez pas approuver la demande de congé de cet employé car il appartient à un autre département.');
         }
 
-        $conge->rh_approval = true;
+        $conge->rh_approval = 1;
         $this->updateStatus($conge);
 
         if ($conge->manager_approval && $conge->rh_approval) {
@@ -123,11 +123,11 @@ class CongeController extends Controller
         }
 
         if (Auth::user()->role_id === 1) {
-            $conge->manager_approval = false;
+            $conge->manager_approval = 0;
         }
 
         if (Auth::user()->role_id === 2) {
-            $conge->rh_approval = false; 
+            $conge->rh_approval = 0; 
         }
 
         $this->updateStatus($conge);
@@ -140,15 +140,19 @@ class CongeController extends Controller
 
     private function updateStatus($conge)
     {
+        // Vérifiez si les deux approbations sont égales à 1
         if ($conge->manager_approval === 1 && $conge->rh_approval === 1) {
             $conge->status = 'accepted';
         } 
-        elseif ($conge->manager_approval === false || $conge->rh_approval === false) {
+        // Vérifiez si l'une des approbations est égale à 0
+        elseif ($conge->manager_approval === 0 || $conge->rh_approval === 0) {
             $conge->status = 'refused';
         } 
+        // Si aucune approbation n'est faite, le statut reste en attente
         else {
             $conge->status = 'pending';
         }
     }
+    
     
 }
