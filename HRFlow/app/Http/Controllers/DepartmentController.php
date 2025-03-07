@@ -17,7 +17,9 @@ class DepartmentController extends Controller
 
     public function create()
     {
-        $users = User::all();
+        $users = User::whereHas('roles', function ($query) {
+            $query->where('name', 'manager');  
+        })->get();
         return view('departments.create', compact('users'));
     }
 
@@ -48,7 +50,9 @@ class DepartmentController extends Controller
     public function edit($id)
     {
         $department = Department::findOrFail($id);
-        $users = User::all();  
+        $users = User::whereHas('roles', function ($query) {
+            $query->where('name', 'manager');  
+        })->get();
         return view('departments.edit', compact('department', 'users'));  
     }
     

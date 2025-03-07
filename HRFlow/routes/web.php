@@ -19,35 +19,35 @@ use App\Http\Controllers\HierarchyController;
 use App\Http\Controllers\RecoveryController;
 
 Route::middleware(['auth'])->group(function () {
-    Route::get('/recoveries', [RecoveryController::class, 'index'])->name('recoveries.index');  
-    Route::get('/my-recoveries', [RecoveryController::class, 'myRecoveries'])->name('recoveries.myRecoveries'); 
-    Route::get('/recoveries/create', [RecoveryController::class, 'create'])->name('recoveries.create'); 
-    Route::post('/recoveries', [RecoveryController::class, 'store'])->name('recoveries.store');  
+    Route::get('/recoveries', [RecoveryController::class, 'index'])->middleware('can:manage recoveries')->name('recoveries.index');  
+    Route::get('/my-recoveries', [RecoveryController::class, 'myRecoveries'])->middleware('can:voir my recoveries')->name('recoveries.myRecoveries'); 
+    Route::get('/recoveries/create', [RecoveryController::class, 'create'])->middleware('can:voir my recoveries')->name('recoveries.create'); 
+    Route::post('/recoveries', [RecoveryController::class, 'store'])->middleware('can:voir my recoveries')->name('recoveries.store');  
 
-    Route::post('/recoveries/{id}/approve', [RecoveryController::class, 'approveByRh'])->name('recoveries.approveByRh');
-    Route::post('/recoveries/{id}/reject', [RecoveryController::class, 'rejectByRh'])->name('recoveries.rejectByRh');
+    Route::post('/recoveries/{id}/approve', [RecoveryController::class, 'approveByRh'])->middleware('can:manage recoveries')->name('recoveries.approveByRh');
+    Route::post('/recoveries/{id}/reject', [RecoveryController::class, 'rejectByRh'])->middleware('can:manage recoveries')->name('recoveries.rejectByRh');
 });
 
 Route::get('/hierarchy', [HierarchyController::class, 'index'])->name('hierarchy.index');
 
-Route::get('carrieres/{carriere}/edit', [CarriereController::class, 'edit'])->name('carrieres.edit');
+Route::get('carrieres/{carriere}/edit', [CarriereController::class, 'edit'])->middleware('can:manage careers')->name('carrieres.edit');
 
-Route::put('carrieres/{carriere}', [CarriereController::class, 'update'])->name('carrieres.update');
+Route::put('carrieres/{carriere}', [CarriereController::class, 'update'])->middleware('can:manage careers')->name('carrieres.update');
 
-Route::get('admin/roles/{role}/edit', [RolePermissionController::class, 'editRole'])->name('admin.roles.edit');
+Route::get('admin/roles/{role}/edit', [RolePermissionController::class, 'editRole'])->middleware('role:admin')->name('admin.roles.edit');
 
-Route::put('admin/roles/{role}', [RolePermissionController::class, 'updateRole'])->name('admin.roles.update');
+Route::put('admin/roles/{role}', [RolePermissionController::class, 'updateRole'])->middleware('role:admin')->name('admin.roles.update');
 
-Route::get('/conges', [CongeController::class, 'index'])->name('conges.index');
+Route::get('/conges', [CongeController::class, 'index'])->middleware('can:manage conges')->name('conges.index');
 Route::middleware('auth')->group(function () {
     Route::get('/conges/create', [CongeController::class, 'create'])->name('conges.create');
     Route::post('/conges', [CongeController::class, 'store'])->name('conges.store');
     Route::get('/mesconges', [CongeController::class, 'myconges'])->name('conges.mesconges');
 });
 
-Route::post('/conge/approve/manager/{id}', [CongeController::class, 'approveByManager'])->name('conge.approve.manager');
-Route::post('/conge/approve/rh/{id}', [CongeController::class, 'approveByRh'])->name('conge.approve.rh');
-Route::post('/conge/reject/{id}', [CongeController::class, 'rejectConge'])->name('conge.reject');
+Route::post('/conge/approve/manager/{id}', [CongeController::class, 'approveByManager'])->middleware('role:manager')->name('conge.approve.manager');
+Route::post('/conge/approve/rh/{id}', [CongeController::class, 'approveByRh'])->middleware('role:RH')->name('conge.approve.rh');
+Route::post('/conge/reject/{id}', [CongeController::class, 'rejectConge'])->middleware('can:manage conges')->name('conge.reject');
 
 
 Route::get('/carrieres', [CarriereController::class, 'index'])->name('carrieres.index');

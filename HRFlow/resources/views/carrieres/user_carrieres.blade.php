@@ -6,12 +6,11 @@
 
     <div class="flex justify-between mb-6">
         <a href="{{ route('users.show', $user->id) }}" class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700">Retour au profil</a>
-        @can('suivi carriere')
+        @can('manage users')
         <a href="{{ route('carrieres.create', ['user_id' => $user->id]) }}" class="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700">Ajouter une nouvelle carrière</a>
         @endcan
     </div>
 
-    <!-- Carrière actuelle -->
     <div class="bg-white rounded-lg shadow-md p-6 mb-6">
         <h2 class="text-xl font-semibold mb-4">Situation actuelle</h2>
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -34,25 +33,21 @@
         </div>
     </div>
 
-    <!-- Historique des carrières sous forme de barre de progression horizontale -->
     <div class="bg-white rounded-lg shadow-md p-6">
         <h2 class="text-xl font-semibold mb-4">Historique des évolutions</h2>
         
         @if($carrieres->count() > 0)
             <div class="relative">
-                <!-- Ligne de progression horizontale -->
+
                 <div class="absolute left-4 right-4 top-4 h-1 bg-gray-300"></div>
 
-                <!-- Points et détails -->
                 <div class="flex justify-between">
                     @foreach($carrieres as $carriere)
                         <div class="relative flex flex-col items-center">
-                            <!-- Point cliquable -->
                             <a href="{{ route('carrieres.show', $carriere->id) }}" class="block w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center text-white hover:bg-blue-700 transition duration-300">
                                 <span class="text-sm">{{ $loop->iteration }}</span>
                             </a>
 
-                            <!-- Détails de la carrière -->
                             <div class="mt-2 text-center">
                                 <p class="text-sm font-medium">{{ $carriere->post->name ?? 'N/A' }}</p>
                                 <p class="text-xs text-gray-600">{{ $carriere->grade->name ?? 'N/A' }}</p>
