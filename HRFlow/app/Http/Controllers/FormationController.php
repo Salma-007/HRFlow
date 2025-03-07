@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Formation;
 use App\Models\User;
+use App\Models\Formation;
 use Illuminate\Http\Request;
+use App\Mail\AssignFormationMail;
+use Illuminate\Support\Facades\Mail;
 
 class FormationController extends Controller
 {
@@ -35,6 +37,11 @@ class FormationController extends Controller
         ]);
 
         $formation->users()->attach($request->users); 
+        
+        foreach ($request->users as $userId) {
+            $user = User::find($userId);  
+            Mail::to($user->email)->send(new AssignFormationMail($user, $formation));
+        }
 
         return redirect()->route('formations.index')->with('success', 'Formation créée avec succès');
     }
@@ -69,7 +76,7 @@ class FormationController extends Controller
         $formation->delete();
         return redirect()->route('formations.index')->with('success', 'Formation supprimée avec succès');
     }
-    // Méthode pour afficher les utilisateurs associés à une formation
+
     public function showUsers(Formation $formation)
     {
         $users = $formation->users;

@@ -16,30 +16,17 @@ class MyTestMail extends Mailable
     public $user;
     public $password;
 
-    /**
-     * Create a new message instance.
-     *
-     * @param  \App\Models\User  $user
-     * @param  string  $password
-     * @return void
-     */
     public function __construct($user, $password)
     {
         $this->user = $user;
         $this->password = $password;
     }
 
-    /**
-     * Build the message.
-     *
-     * @return $this
-     */
     public function build()
     {
         return $this->view('emails.welcome_user')
                     ->with([
                         'userName' => $this->user,
-                        // 'userEmail' => $this->user->email,
                         'userPassword' => $this->password,
                     ]);
     }
