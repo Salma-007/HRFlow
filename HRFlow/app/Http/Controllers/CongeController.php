@@ -140,15 +140,12 @@ class CongeController extends Controller
 
     private function updateStatus($conge)
     {
-        // Vérifiez si les deux approbations sont égales à 1
         if ($conge->manager_approval === 1 && $conge->rh_approval === 1) {
             $conge->status = 'accepted';
         } 
-        // Vérifiez si l'une des approbations est égale à 0
         elseif ($conge->manager_approval === 0 || $conge->rh_approval === 0) {
             $conge->status = 'refused';
         } 
-        // Si aucune approbation n'est faite, le statut reste en attente
         else {
             $conge->status = 'pending';
         }

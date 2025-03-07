@@ -53,6 +53,16 @@
                         {{ __('Mes Congés') }}
                     </x-nav-link>
                     @endcan
+                    @can('manage recoveries')
+                    <x-nav-link :href="route('recoveries.index')" :active="request()->routeIs('recoveries.index')">
+                        {{ __('Recoveries') }}
+                    </x-nav-link>
+                    @endcan
+                    @can('voir mes conges')
+                    <x-nav-link :href="route('recoveries.myRecoveries')" :active="request()->routeIs('recoveries.myRecoveries')">
+                        {{ __('My Recoveries') }}
+                    </x-nav-link>
+                    @endcan
                 </div>
             </div>
 

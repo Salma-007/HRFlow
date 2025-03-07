@@ -16,6 +16,17 @@ use App\Http\Controllers\CarriereController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\CongeController;
 use App\Http\Controllers\HierarchyController;
+use App\Http\Controllers\RecoveryController;
+
+Route::middleware(['auth'])->group(function () {
+    Route::get('/recoveries', [RecoveryController::class, 'index'])->name('recoveries.index');  
+    Route::get('/my-recoveries', [RecoveryController::class, 'myRecoveries'])->name('recoveries.myRecoveries'); 
+    Route::get('/recoveries/create', [RecoveryController::class, 'create'])->name('recoveries.create'); 
+    Route::post('/recoveries', [RecoveryController::class, 'store'])->name('recoveries.store');  
+
+    Route::post('/recoveries/{id}/approve', [RecoveryController::class, 'approveByRh'])->name('recoveries.approveByRh');
+    Route::post('/recoveries/{id}/reject', [RecoveryController::class, 'rejectByRh'])->name('recoveries.rejectByRh');
+});
 
 Route::get('/hierarchy', [HierarchyController::class, 'index'])->name('hierarchy.index');
 

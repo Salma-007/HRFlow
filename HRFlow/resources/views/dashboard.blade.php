@@ -65,6 +65,15 @@
                 </div>
                     <h3 class="text-xl mt-4 font-semibold">Jours de Congé Restants</h3>
                 </div>
+                <div class="bg-green-500 text-white p-6 rounded-lg shadow-lg transition-transform transform hover:scale-105 duration-300 ease-in-out">
+                    <div class="flex items-center justify-between">
+                        <div class="text-3xl font-semibold">{{ Auth::user()->solde_recup }} jours</div>
+                        <div class="text-4xl">
+                            <i class="fas fa-users"></i> 
+                        </div>
+                    </div>
+                    <h3 class="text-xl mt-4 font-semibold">Jours des recupérations</h3>
+                </div>
                 @endcan
             </div>
         </div>
